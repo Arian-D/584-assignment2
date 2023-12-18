@@ -1,0 +1,48 @@
+#+TITLE: Assignment 2
+#+author: Arian Dehghani
+
+* Part 1
+** Docker Compose Setup
+Initially I ran the following command:
+#+begin_src sh
+docker compose up -d
+#+end_src
+which brought up the server. I confirmed it with =docker compose ps= and
+viewed the logs with =docker compose logs -f= to watch the traffic live
+in another terminal as I made the requests.
+** Test Data
+Instead of using postman, I used a simple =curl= command which was
+quicker and didn't require me to install additional software:
+#+begin_src bash
+  curl --form \
+       "my_audio_file=@./test_files/641693__theflyfishingfilmmaker__bluesy-violin-repeating-lick.wav" \
+       localhost:8086/api/file_tempo \
+       | jq
+#+end_src
+
+The =--form= flag allows supplying form data and the =@./...= allows
+supplying the file. At the end, I piped it into =jq= to prettify it:
+
+#+begin_src javascript
+{
+  "filename": "641693__theflyfishingfilmmaker__bluesy-violin-repeating-lick.wav",
+  "overall_tempo": 97.09181213378906,
+  "peak_1": 98,
+  "peak_2": 92
+}
+#+end_src
+
+Which yielded the correct results, allowing me to work on the second part.
+
+* Part 2
+Per the suggestion on the README, I used sheet.js. Subsequently, I
+followed the [[https://docs.sheetjs.com/docs/][getting started guide of their official docs]] to install
+and set up a Vite template repo with typescript.
+
+This repo contains the code that you can run locally. My machine is
+fairly slow, so I used [[https://bun.sh/][bun]] instead of npm, but any other package
+manager should work.
+
+#+begin_src sh
+bun run start
+#+end_src
